@@ -1,0 +1,14 @@
+FROM node:lts-alpine
+
+WORKDIR /app
+
+ENV PATH /app/node_modules/.bin:$PATH
+
+COPY package.json yarn.lock ./
+
+RUN yarn install
+
+COPY ./src ./
+COPY ./tsconfig.json ./
+
+CMD ["yarn", "dev"]
