@@ -2,6 +2,7 @@
 
 /.env
 /.idea
+/src/settings.json
 
 # dependencies
 /node_modules

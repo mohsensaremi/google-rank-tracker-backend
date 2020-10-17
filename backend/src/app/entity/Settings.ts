@@ -2,6 +2,7 @@ import * as t from 'io-ts';
 
 export const SettingsCodec = t.type({
     browserSearchSleepSeconds: t.number,
+    browserSearchMaxPage: t.number,
     keywordRankHistoryCount: t.number,
 }, 'Settings');
 

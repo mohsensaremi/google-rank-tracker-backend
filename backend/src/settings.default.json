@@ -1,0 +1,5 @@
+{
+  "browserSearchSleepSeconds": 10,
+  "browserSearchMaxPage": 10,
+  "keywordRankHistoryCount": 500
+}
