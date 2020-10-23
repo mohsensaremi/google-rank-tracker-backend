@@ -84,16 +84,6 @@ export const keywordRankQueueFactory = (ctx: AppContext) => {
                                     }),
                                     KeywordRankCodec.encode,
                                     ctx.repo.KeywordRank.updateOne,
-                                    T.chain(x => pipe(
-                                        ({
-                                            ...keyword,
-                                            lastRank: x.rank,
-                                            lastRank2: keyword.lastRank,
-                                        }),
-                                        KeywordCodec.encode,
-                                        ctx.repo.Keyword.updateOne,
-                                        T.map(() => x),
-                                    )),
                                 ))),
                                 TE.fold(
                                     () => T.of(keywordRank),
@@ -108,6 +98,16 @@ export const keywordRankQueueFactory = (ctx: AppContext) => {
                                     }),
                                     KeywordRankCodec.encode,
                                     ctx.repo.KeywordRank.updateOne,
+                                    T.chain(keywordRank => pipe(
+                                        ({
+                                            ...keyword,
+                                            lastRank: keywordRank.rank,
+                                            lastRank2: keyword.lastRank,
+                                        }),
+                                        KeywordCodec.encode,
+                                        ctx.repo.Keyword.updateOne,
+                                        T.map(() => keywordRank),
+                                    )),
                                 ))
                             ))),
                         )),
