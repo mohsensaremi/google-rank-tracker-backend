@@ -3,6 +3,7 @@
 /.env
 /.idea
 /src/settings.json
+out.png
 
 # dependencies
 /node_modules

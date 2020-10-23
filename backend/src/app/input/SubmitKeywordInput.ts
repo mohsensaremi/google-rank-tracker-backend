@@ -6,6 +6,10 @@ export const SubmitKeywordInputCodec = t.intersection([
     t.type({
         websiteId: MongoDBObjectIDStringCodec,
         title: t.string,
+        platform: t.union([
+            t.literal('desktop'),
+            t.literal('mobile'),
+        ]),
     }),
     partialNullableType({
         id: MongoDBObjectIDStringCodec,

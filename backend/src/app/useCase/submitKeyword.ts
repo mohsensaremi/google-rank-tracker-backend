@@ -19,6 +19,7 @@ export const submitKeyword = (ctx: AppContext) => (input: SubmitKeywordInput) =>
             ...current,
             id: current ? current.id : new ObjectId(),
             title: input.title,
+            platform: input.platform,
             websiteId: input.websiteId,
         }),
         KeywordCodec.decode,

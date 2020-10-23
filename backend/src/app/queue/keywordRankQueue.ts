@@ -6,12 +6,13 @@ import * as T from "fp-ts/Task";
 import {ApplicationError, ApplicationErrorKind} from "Error/ApplicationError";
 import {KeywordCodec} from "app/entity/Keyword";
 import {decodeCodec} from "utils/codec/decodeCodec";
-import {getKeywordRank} from "app/useCase/getKeywordRank";
 import {ObjectId} from 'mongodb';
 import {WebsiteCodec} from "app/entity/Website";
 import {sleep} from "utils/time";
 import {KeywordRankCodec} from "app/entity/KeywordRank";
 import {getSettings} from "app/useCase/getSettings";
+import {getDesktopKeywordRank} from "app/useCase/getDesktopKeywordRank";
+import {getMobileKeywordRank} from "app/useCase/getMobileKeywordRank";
 
 export const keywordRankQueueFactory = (ctx: AppContext) => {
     const queue = 'keywordRank';
@@ -55,12 +56,20 @@ export const keywordRankQueueFactory = (ctx: AppContext) => {
                         )),
                         TE.chain(({keyword, website, keywordRank}) => pipe(
                             TE.tryCatch(
-                                async () => await getKeywordRank({
-                                    maxPage: settings.browserSearchMaxPage,
-                                })(website.website)(keyword.title),
+                                async () =>
+                                    keyword.platform === "mobile"
+                                        ? await getMobileKeywordRank({
+                                            maxPage: settings.browserSearchMaxPage,
+                                        })(website.website)(keyword.title)
+                                        : await getDesktopKeywordRank({
+                                            maxPage: settings.browserSearchMaxPage,
+                                        })(website.website)(keyword.title),
                                 (error: any) => new ApplicationError({
                                     kind: ApplicationErrorKind.GetRank,
-                                    data: error,
+                                    data: {
+                                        message: error.message,
+                                        originalError: error,
+                                    },
                                 })
                             ),
                             TE.chain(rank => TE.rightTask(pipe(
@@ -75,6 +84,16 @@ export const keywordRankQueueFactory = (ctx: AppContext) => {
                                     }),
                                     KeywordRankCodec.encode,
                                     ctx.repo.KeywordRank.updateOne,
+                                    T.chain(x => pipe(
+                                        ({
+                                            ...keyword,
+                                            lastRank: x.rank,
+                                            lastRank2: keyword.lastRank,
+                                        }),
+                                        KeywordCodec.encode,
+                                        ctx.repo.Keyword.updateOne,
+                                        T.map(() => x),
+                                    )),
                                 ))),
                                 TE.fold(
                                     () => T.of(keywordRank),

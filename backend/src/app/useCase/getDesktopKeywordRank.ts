@@ -9,15 +9,15 @@ const By = webdriver.By;
 type GetRankConfig = {
     maxPage: number,
 }
-export const getKeywordRank = (config: GetRankConfig) => (website: string) => async (term: string) => {
+export const getDesktopKeywordRank = (config: GetRankConfig) => (website: string) => async (term: string) => {
 
     let builder = new webdriver.Builder()
         .forBrowser('chrome')
         .setChromeOptions(
             new chrome.Options()
-                .headless()
                 .windowSize({width: 1366, height: 2300})
         )
+
 
     if (process.env.SELENIUM_HUB_HOST) {
         builder = builder.usingServer(`http://${process.env.SELENIUM_HUB_HOST}:4444/wd/hub`)

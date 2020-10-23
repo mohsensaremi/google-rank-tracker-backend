@@ -14,7 +14,6 @@ export const getKeywordDatatable = (ctx: AppContext) => (input: GetKeywordDatata
     }),
     T.chain(dt => pipe(
         ({
-            lastRankLoader: new DataLoader(lastRankLoaderFn(ctx)),
             pendingRankLoader: new DataLoader(pendingRankLoaderFn(ctx)),
         }),
         (loader => pipe(
@@ -28,15 +27,6 @@ export const getKeywordDatatable = (ctx: AppContext) => (input: GetKeywordDatata
         }))
     )),
 );
-
-const lastRankLoaderFn = (ctx: AppContext) => async (ids: readonly ObjectId[]) => {
-    const items = await ctx.repo.KeywordRank.find({
-        keywordId: {$in: ids.map(x => String(x))},
-        state: "done",
-    })();
-    const itemsByKeywordId = keyBy(items, "keywordId");
-    return ids.map(id => itemsByKeywordId[String(id)] || null);
-};
 
 const pendingRankLoaderFn = (ctx: AppContext) => async (ids: readonly ObjectId[]) => {
     const items = await ctx.repo.KeywordRank.find({
