@@ -4,6 +4,9 @@ import {AppContext} from "app/context";
 
 export const registerCronJobs = (ctx: AppContext) => {
     cron.schedule('0 0 0 * * *', async () => {
-        await enqueueAllKeywords(ctx)();
+        const out = await enqueueAllKeywords(ctx)();
+        console.log("=== CRON OUTPUT ===");
+        console.log("enqueueAllKeywords", out);
+        console.log("=== ~ CRON OUTPUT ===");
     });
 };
