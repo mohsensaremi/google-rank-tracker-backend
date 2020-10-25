@@ -8,7 +8,7 @@ import {httpFactory} from "app/http";
 import {keywordRankQueueFactory} from "app/queue/keywordRankQueue";
 import http from 'http';
 import {socketIOFactory} from "config/socketIO";
-import {registerCronJobs} from "app/cront";
+import {registerCronJobs} from "app/schedule";
 import {getSettings} from "app/useCase/getSettings";
 import * as E from "fp-ts/Either";
 
