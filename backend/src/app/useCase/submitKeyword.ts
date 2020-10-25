@@ -21,6 +21,7 @@ export const submitKeyword = (ctx: AppContext) => (input: SubmitKeywordInput) =>
             title: input.title,
             platform: input.platform,
             websiteId: input.websiteId,
+            category: input.category,
         }),
         KeywordCodec.decode,
         E.map(KeywordCodec.encode),

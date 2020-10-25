@@ -28,6 +28,8 @@ import {SettingsCodec} from "app/entity/Settings";
 import {saveSettings} from "app/useCase/saveSettings";
 import {decodeCodec} from "utils/codec/decodeCodec";
 import {enqueueAllKeywords} from "app/useCase/enqueueAllKeywords";
+import {GetKeywordCategoriesInputCodec} from "app/input/GetKeywordCategoriesInput";
+import {getKeywordCategories} from "app/useCase/getKeywordCategories";
 
 export const httpFactory = (ctx: AppContext) => {
     const router = express.Router()
@@ -52,6 +54,14 @@ export const httpFactory = (ctx: AppContext) => {
         routeHandlerTaskEither((req) => pipe(
             TE.fromEither(GetKeywordDatatableInputCodec.decode(req.query)),
             TE.chain(input => TE.rightTask(getKeywordDatatable(ctx)(input))),
+        ))
+    );
+
+    router.get(
+        '/keyword/categories/:websiteId',
+        routeHandlerTaskEither((req) => pipe(
+            TE.fromEither(GetKeywordCategoriesInputCodec.decode(req.params)),
+            TE.chain(input => TE.rightTask(getKeywordCategories(ctx)(input))),
         ))
     );
 

@@ -11,6 +11,11 @@ import {formatKeyword} from "app/useCase/formatKeyword";
 export const getKeywordDatatable = (ctx: AppContext) => (input: GetKeywordDatatableInput) => pipe(
     ctx.repo.Keyword.datatable(input, {
         websiteId: input.websiteId,
+        ...(
+            input.category ? {
+                category: input.category,
+            } : {}
+        ),
     }),
     T.chain(dt => pipe(
         ({

@@ -16,6 +16,7 @@ export const KeywordCodec = t.intersection([
     partialNullableType({
         lastRank: t.number,
         lastRank2: t.number,
+        category: t.string,
     }),
 ], 'Keyword');
 

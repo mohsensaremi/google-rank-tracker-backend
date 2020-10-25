@@ -19,4 +19,5 @@ export const repositoryFactory = <U extends Entity>(db: Db) => (collection: stri
     findById: findByIdFactory(db)(collection),
     findOne: findOneFactory(db)(collection),
     datatable: datatableFactory(db)(collection),
+    getCollection: () => db.collection(collection),
 });

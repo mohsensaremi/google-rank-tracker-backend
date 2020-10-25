@@ -13,6 +13,7 @@ export const SubmitKeywordInputCodec = t.intersection([
     }),
     partialNullableType({
         id: MongoDBObjectIDStringCodec,
+        category: t.string,
     }),
 ]);
 
