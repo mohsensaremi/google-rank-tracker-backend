@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "NODE_PATH=./src nodemon ./src/index.ts"
+    "dev": "NODE_PATH=./src nodemon --exitcrash ./src/index.ts"
   },
   "devDependencies": {
     "@types/amqplib": "^0.5.14",

@@ -28,7 +28,7 @@ if (E.isRight(settingsEither)) {
         const server = http.createServer(app);
         const socketIO = socketIOFactory(server);
 
-        appContextFactory(db, socketIO).then(ctx => {
+        return appContextFactory(db, socketIO).then(ctx => {
             console.log("context created successfully");
 
             const router = httpFactory(ctx);
@@ -42,7 +42,11 @@ if (E.isRight(settingsEither)) {
                 registerCronJobs(ctx);
             });
         });
+    }).catch(error => {
+        console.log("ERROR", error);
+        process.exit(1);
     });
 } else {
-    throw settingsEither.left;
+    console.log("ERROR", settingsEither.left);
+    process.exit(1);
 }
