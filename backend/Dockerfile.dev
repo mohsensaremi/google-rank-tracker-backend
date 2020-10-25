@@ -2,13 +2,10 @@ FROM node:lts-alpine
 
 WORKDIR /app
 
-ENV PATH /app/node_modules/.bin:$PATH
-
-COPY package.json yarn.lock ./
+COPY . .
 
 RUN yarn install
 
-COPY ./src ./
-COPY ./tsconfig.json ./
+ENV PATH /app/node_modules/.bin:$PATH
 
 CMD ["yarn", "dev"]
