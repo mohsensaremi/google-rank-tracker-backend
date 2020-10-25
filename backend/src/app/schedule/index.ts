@@ -3,7 +3,7 @@ import {enqueueAllKeywords} from "app/useCase/enqueueAllKeywords";
 import {AppContext} from "app/context";
 
 export const registerCronJobs = (ctx: AppContext) => {
-    cron.schedule('0 0 0 * * *', () => {
-        enqueueAllKeywords(ctx);
+    cron.schedule('0 0 0 * * *', async () => {
+        await enqueueAllKeywords(ctx)();
     });
 };
