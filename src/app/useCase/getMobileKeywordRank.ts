@@ -32,13 +32,12 @@ export const getMobileKeywordRank = (config: GetRankConfig) => (website: string)
 
     try {
         while (page < config.maxPage) {
-            const elements = await driver.findElements(By.xpath("//div[contains(@class, 'xpd')]"))
+            const anchors = await driver.findElements(By.xpath(`//a[contains(@class, 'C8nzq')]`))
 
-            for (let i = 0; i < elements.length; i++) {
-                const elem = elements[i];
-                const anchors = await elem.findElements(By.xpath(`.//a[contains(@href, '${website}')]`));
-                if (anchors.length > 0) {
-                    // await driver.executeScript("arguments[0].setAttribute('style', 'font-weight:bold; background-color:#a8ffff')", elem)
+            for (let i = 0; i < anchors.length; i++) {
+                const anchor = anchors[i];
+                const href = await anchor.getAttribute("href");
+                if (href.indexOf(website) >= 0) {
                     await driver.quit();
                     return (i + 1);
                 }
